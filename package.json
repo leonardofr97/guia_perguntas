@@ -1,0 +1,23 @@
+{
+  "name": "guia_perguntas",
+  "version": "1.0.0",
+  "description": "Uma plataforma de perguntas e respostas ao estilo Yahoo Respostas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leonardofr97/guia_perguntas.git"
+  },
+  "author": "Leonardo Freitas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leonardofr97/guia_perguntas/issues"
+  },
+  "homepage": "https://github.com/leonardofr97/guia_perguntas#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1"
+  }
+}
