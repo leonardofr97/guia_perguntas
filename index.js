@@ -1,12 +1,19 @@
 const express = require("express");
 const app = express();
 
+const bodyParser = require("body-parser");
+
 // Express vai usar o EJS como view engine
 app.set("view engine", "ejs");
 
 // Para a aplicação aceitar arquivos estaticos que deverão estar em uma pasta com o nome "public" (arquivos de img, css ...)
 app.use(express.static("public"));
 
+// Body Parser
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
+// Rotas
 app.get("/", (req, res) => {
 
     /*
@@ -39,6 +46,16 @@ app.get("/", (req, res) => {
 app.get("/perguntar", (req, res) => {
 
     res.render("perguntar");
+});
+
+app.post("/salvarpergunta", (req, res) => {
+
+    // 'titulo' e 'descricao' foram definidos no atributo 'name' dos inputs do form no HTML
+    // Capturando os dados inputados no formulario
+    var titulo = req.body.titulo;
+    var descricao = req.body.descricao;
+
+    res.send("Pergunta salva! <br> Titulo: " + titulo + "<br> Descrição: " + descricao);
 });
 
 app.listen(8080, () => {
