@@ -4,7 +4,7 @@ const app = express();
 const bodyParser = require("body-parser");
 
 const connection = require("./database/database");
-const perguntaModel = require("./database/Pergunta");
+const Pergunta = require("./database/Pergunta");
 // Database
 connection
     .authenticate()
@@ -53,7 +53,12 @@ app.get("/", (req, res) => {
     });
     */
 
-    res.render("index");
+    // findAll faz um select buscando todos os registros de determinada tabela e guarda em um array, raw true guarda no array somente os dados das colunas dos registros
+    Pergunta.findAll({ raw: true }).then(perguntas => {
+        res.render("index", {
+            perguntas: perguntas
+        });
+    });
 });
 
 app.get("/perguntar", (req, res) => {
@@ -68,7 +73,13 @@ app.post("/salvarpergunta", (req, res) => {
     var titulo = req.body.titulo;
     var descricao = req.body.descricao;
 
-    res.send("Pergunta salva! <br> Titulo: " + titulo + "<br> Descrição: " + descricao);
+    // create faz a criação do registro na tabela perguntas no DB, basicamente faz uma operação de insert
+    Pergunta.create({
+        titulo: titulo,
+        descricao: descricao
+    }).then(() => {
+        res.redirect("/");
+    });
 });
 
 app.listen(8080, () => {
