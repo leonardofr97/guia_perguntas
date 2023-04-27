@@ -54,7 +54,10 @@ app.get("/", (req, res) => {
     */
 
     // findAll faz um select buscando todos os registros de determinada tabela e guarda em um array, raw true guarda no array somente os dados das colunas dos registros
-    Pergunta.findAll({ raw: true }).then(perguntas => {
+    // order => serve para definir uma regra de ordenação, funciona como um ORDER BY
+    Pergunta.findAll({ raw: true, order: [
+        ["id", "DESC"] // ASC = Crescente, DESC = Decrescente
+    ]}).then(perguntas => {
         res.render("index", {
             perguntas: perguntas
         });
