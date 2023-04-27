@@ -85,6 +85,23 @@ app.post("/salvarpergunta", (req, res) => {
     });
 });
 
+app.get("/pergunta/:id", (req, res) => {
+    var id = req.params.id;
+    // faz o select de apenas um registro de acordo com a regra de busca
+    Pergunta.findOne({
+        where: {id: id}
+    }).then(pergunta => {
+
+        if (pergunta != undefined) {
+            res.render("pergunta", {
+                pergunta: pergunta
+            });
+        } else { // se não achar a pergunta do id passado via GET no banco, redireciona para o index
+            res.redirect("/");
+        }
+    });
+});
+
 app.listen(8080, () => {
     console.log("App rodando!");
 });
