@@ -12,11 +12,31 @@
             <div class="card-body">
                 <h5><%= pergunta.descricao %></h5>
             </div>
-            <div class="card-footer">
-                <button class="btn btn-primary">Responder</button>
-            </div>
         </div>
         <hr>
+        <form action="/salvaresposta/<%= pergunta.id %>" method="POST">
+            <h3>Responda a pergunta</h3>
+            <label>Resposta:</label>
+            <textarea placeholder="Digite sua resposta" class="form-control" name="descricao"></textarea>
+            <br>
+            <button type="submit" class="btn btn-primary">Responder</button>
+        </form>
+        <hr>
+        <h3>Respostas</h3>
+        <hr>
+        <% if (!temRespostas) { %>
+            <div class="alert alert-info" role="alert">
+                Ainda não possui respostas.
+            </div>
+        <% } %>
+        <% respostas.forEach(resposta => { %>
+            <br>
+            <div class="card">
+                <div class="card-body">
+                    <p><%= resposta.descricao %></p>
+                </div>
+            </div>
+        <% }) %>
     </div>
 </body>
 <%- include("partials/footer") %>

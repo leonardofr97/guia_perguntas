@@ -15,6 +15,6 @@ const Pergunta = connection.define("perguntas", {
 
 // Irá fazer a criação da tabela perguntas de acordo com o que foi definido no model
 // force: false => não irá criar a tabela se esta já existir
-Pergunta.sync({force: false}).then(() => {});
+Pergunta.sync({force: false});
 
 module.exports = Pergunta;

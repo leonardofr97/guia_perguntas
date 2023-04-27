@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 
 const connection = require("./database/database");
 const Pergunta = require("./database/Pergunta");
+const Resposta = require("./database/Resposta");
 // Database
 connection
     .authenticate()
@@ -30,11 +31,11 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
 
     /*
-    var nome = req.params.nome;
-    var lang = req.params.lang;
-    var exibirMsg = false;
+    let nome = req.params.nome;
+    let lang = req.params.lang;
+    let exibirMsg = false;
 
-    var produtos = [
+    let produtos = [
         {nome: "Doritos", preco: 3.14},
         {nome: "Coca-Cola", preco: 5.5},
         {nome: "Leite", preco: 4.29}
@@ -73,8 +74,8 @@ app.post("/salvarpergunta", (req, res) => {
 
     // 'titulo' e 'descricao' foram definidos no atributo 'name' dos inputs do form no HTML
     // Capturando os dados inputados no formulario
-    var titulo = req.body.titulo;
-    var descricao = req.body.descricao;
+    let titulo = req.body.titulo;
+    let descricao = req.body.descricao;
 
     // create faz a criação do registro na tabela perguntas no DB, basicamente faz uma operação de insert
     Pergunta.create({
@@ -86,19 +87,44 @@ app.post("/salvarpergunta", (req, res) => {
 });
 
 app.get("/pergunta/:id", (req, res) => {
-    var id = req.params.id;
+    let id = req.params.id;
     // faz o select de apenas um registro de acordo com a regra de busca
     Pergunta.findOne({
         where: {id: id}
     }).then(pergunta => {
 
         if (pergunta != undefined) {
-            res.render("pergunta", {
-                pergunta: pergunta
+
+            Resposta.findAll({
+                where: {perguntaId: pergunta.id},
+                order: [
+                    ["id", "DESC"]
+                ]
+            }).then(respostas => {
+
+                let temRespostas = (respostas.length > 0);
+
+                res.render("pergunta", {
+                    pergunta: pergunta,
+                    respostas: respostas,
+                    temRespostas: temRespostas
+                });
             });
+
         } else { // se não achar a pergunta do id passado via GET no banco, redireciona para o index
             res.redirect("/");
         }
+    });
+});
+
+app.post("/salvaresposta/:perguntaId", (req, res) => {
+    let descricao = req.body.descricao;
+    let perguntaId = req.params.perguntaId;
+    Resposta.create({
+        descricao: descricao,
+        perguntaId: perguntaId
+    }).then(() => {
+        res.redirect("/pergunta/" + perguntaId);
     });
 });
 
